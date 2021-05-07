@@ -23,6 +23,7 @@ const ball = {
 
 // Paddle Object
 const user1 = {
+    name:"User1",
     x: 0,
     y: (canvas.height - 100) / 2,
     width: 10,
@@ -32,6 +33,7 @@ const user1 = {
 };
 
 const user2 = {
+    name:"User2",
     x: (canvas.width - 10),
     y: (canvas.height - 100) / 2,
     width: 10,
@@ -98,6 +100,16 @@ function resetBall() {
 }
 
 function update() {
+    if(user1.score >=10){
+        startagain();
+        displayWinner();
+    }
+    else if(user2.score >=10){
+        startagain();
+        displayWinner();
+    }
+
+
     if( ball.x - ball.radius < 0 ){
         user2.score++;
         resetBall();
@@ -177,3 +189,35 @@ let framePerSecond = 50;
 // game();
 //call the game function 50 times every 1 Sec
 let loop = setInterval(game, 1000 / framePerSecond);
+
+function startagain(){
+    user1.score=0;
+    user2.score=0;
+    ball.x  = canvas.width/2;
+    ball.y  = canvas.height/2;
+    user1.x = 0;
+    user1.y = (canvas.height - user1.height)/2;
+    user2.x = canvas.width - 10;
+    user2.y = (canvas.height - user1.height)/2;
+}
+
+
+// winner canvas
+
+
+const winner = document.getElementById('winner');
+
+function displayWinner(){
+    
+    canvas.style.display="none";
+    winner.style.display="block";
+    const winner_player = (ball.x + ball.radius < canvas.width / 2) ? user1 : user2;
+   winner.textContent = `${winner_player.name} won the Game !!!! 
+   Starting new Game`;
+
+   setTimeout(() => {
+    canvas.style.display="block";
+    winner.style.display="none";
+   }, 2000);
+}
+
